@@ -1,0 +1,276 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Attractor Lab 研究大模型与智能体系统的长期动力学、复杂性与稳定性。"><meta name="referrer" content="strict-origin-when-cross-origin"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; font-src 'self' data: https://fonts.gstatic.com https://cdn.jsdelivr.net; script-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests"><link rel="icon" href="/favicon.svg"><link id="atlab-font-lxgw" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/style.css"><title>@lab · 同济大学</title><link rel="stylesheet" href="/_astro/PageLayout.g3oEc1qX.css"></head><body><aside class="sidebar"><div class="sidebar-inner"><a class="brand" href="/"><strong>Xin Du</strong></a><nav class="side-nav" aria-label="主导航"><p class="nav-heading">导航</p><a href="/" class="nav-link"><span>个人主页</span><small>01</small></a><a href="/zh/attractor-lab/" class="nav-link active" aria-current="page"><span>@lab</span><small>02</small></a><p class="nav-group-heading">研究方向</p><div class="nav-children"><a href="/zh/research/agent-dynamics/" class="nav-child"><span>智能体动力学</span><small>R1</small></a><a href="/zh/research/language-fractal-dimension/" class="nav-child"><span>大模型与复杂性</span><small>R2</small></a><a href="/zh/research/generative-retrieval/" class="nav-child"><span>语义压缩与聚类</span><small>R3</small></a><a href="/zh/research/nonlinear-semantics-linear-models/" class="nav-child"><span>非线性语义表示与线性语言模型</span><small>R4</small></a><a href="/zh/research/semantic-financial-markets/" class="nav-child"><span>复杂金融市场的语义模型</span><small>R5</small></a></div></nav><details class="typography-controls" hidden><summary><span aria-hidden="true">Aa</span><span>排版调试</span></summary><div class="typography-panel"><label><span>全站字体</span><select data-typography-font><option value="songti">系统宋体</option><option value="kaiti">系统楷体</option><option value="fangsong">系统仿宋</option><option value="heiti">系统黑体</option><option value="notoSerif">思源宋体 · 网络</option><option value="lxgw">霞鹜文楷 · 网络</option><option value="notoSans">思源黑体 · 网络</option><option value="zcoolXiaoWei">站酷小薇体 · 网络</option><option value="maShanZheng">马善政毛笔体 · 网络</option><option value="longCang">龙藏体 · 网络</option><option value="zcoolQingKe">站酷庆科黄油体 · 网络</option><option value="zcoolKuaiLe">站酷快乐体 · 网络</option></select></label><label><span>正文字号</span><select data-typography-reading-size><option value="15">15 px</option><option value="16" selected>16 px</option><option value="17">17 px</option><option value="18">18 px</option><option value="19">19 px</option><option value="20">20 px</option><option value="21">21 px</option><option value="22">22 px</option></select></label><label><span>导航字号</span><select data-typography-sidebar-size><option value="16">16 px</option><option value="17">17 px</option><option value="18" selected>18 px</option><option value="19">19 px</option><option value="20">20 px</option></select></label><div class="typography-panel-footer"><small data-typography-status aria-live="polite"></small><button type="button" data-typography-reset>恢复默认</button></div></div></details><a class="language-link" href="/en/attractor-lab/" hreflang="en"><span aria-hidden="true">文</span>English</a><div class="institution"><span>TONGJI UNIVERSITY</span><small>Shanghai Research Institute for Intelligent Autonomous Systems</small></div></div></aside><header class="mobile-header"><a class="mobile-brand" href="/">Xin Du · 杜鑫</a><details class="mobile-menu"><summary>菜单</summary><nav aria-label="移动导航"><a href="/">个人主页</a><a href="/zh/attractor-lab/">@lab</a><span class="mobile-menu-group">研究方向</span><a class="mobile-menu-child" href="/zh/research/agent-dynamics/">智能体动力学</a><a class="mobile-menu-child" href="/zh/research/language-fractal-dimension/">大模型与复杂性</a><a class="mobile-menu-child" href="/zh/research/generative-retrieval/">语义压缩与聚类</a><a class="mobile-menu-child" href="/zh/research/nonlinear-semantics-linear-models/">非线性语义表示与线性语言模型</a><a class="mobile-menu-child" href="/zh/research/semantic-financial-markets/">复杂金融市场的语义模型</a><a href="/en/attractor-lab/" hreflang="en">English</a></nav></details></header><div class="page-shell"><main><article class="page-content"><h1 id="lab">@lab</h1>
+<img src="../../images/attractorlab%20logo.png" alt="Attractor Lab 标志" width="220" loading="eager">
+<p>@ 同济大学 · 上海自主智能无人系统科学中心</p>
+<p><a href="https://srias.tongji.edu.cn/main.htm">上海自主智能无人系统科学中心</a> ｜ <a href="https://www.tongji.edu.cn">同济大学</a></p>
+<p>相关链接 → <a href="https://robot.tongji.edu.cn">同济大学机器人实验室</a> · <a href="https://ml-waseda.jp">早稻田大学语言智能实验室</a></p>
+<h2 id="我们在做什么">我们在做什么？</h2>
+<p>@lab 研究大模型与智能体的动力学、复杂性和语义压缩。技术主线包括状态空间几何、相变与临界性、信息瓶颈及生成分布。</p>
+<p>研究目标是建立可测量的序参量和失真函数，并将其用于训练诊断、生成监测、智能体控制、文档聚类与知识检索。</p>
+<h2 id="研究方向">研究方向</h2>
+<p>五条方向共享一个问题：如何从局部概率、有限状态与异质观测中识别、表示并控制宏观结构。</p>
+<h2 id="研究主题">研究主题</h2>
+<ul>
+<li>
+<p><strong><a href="/zh/research/agent-dynamics/">智能体动力学</a></strong><br>
+状态空间 · 模式坍缩 · 临界预警 · 闭环控制<br>
+代表工作：<a href="/zh/papers/escaping-mode-collapse">ICML 2026</a></p>
+</li>
+<li>
+<p><strong><a href="/zh/research/language-fractal-dimension/">大模型与复杂性</a></strong><br>
+分形几何 · 统计流形 · 长程依赖 · 生成退化<br>
+代表工作：<a href="/zh/papers/correlation-dimension-llms">NeurIPS 2025</a> · <a href="/zh/papers/correlation-dimension-natural-language">Physical Review Research 2024</a></p>
+</li>
+<li>
+<p><strong><a href="/zh/research/generative-retrieval/">语义压缩与聚类</a></strong><br>
+信息瓶颈 · 率失真 · 生成式聚类 · 知识索引<br>
+代表工作：<a href="/zh/papers/bottleneck-minimal-indexing">ICML 2024 Oral</a> · <a href="/zh/papers/generative-clustering">AAAI 2025</a></p>
+</li>
+<li>
+<p><strong><a href="/zh/research/nonlinear-semantics-linear-models/">非线性语义表示与线性语言模型</a></strong><br>
+语义场 · 多义性 · 状态空间模型 · 有限状态记忆<br>
+代表工作：<a href="/zh/papers/fire-semantic-field">NeurIPS 2022</a></p>
+</li>
+<li>
+<p><strong><a href="/zh/research/semantic-financial-markets/">复杂金融市场的语义模型</a></strong><br>
+股票表示 · 事件语义 · 组合优化 · 尾部风险<br>
+代表工作：<a href="/zh/papers/stock-embeddings">ACL 2020</a> · <a href="/zh/papers/nested-portfolio">Knowledge-Based Systems 2022</a></p>
+</li>
+</ul>
+<h2 id="招生信息">招生信息</h2>
+<h3 id="2027级硕士生">2027级硕士生</h3>
+<p>欢迎报考同济大学 2027 级硕士研究生，研究方向包括大模型与智能体、复杂系统、语义压缩及金融语义建模。</p>
+<h3 id="2027年博士生直博--普博">2027年博士生（直博 / 普博）</h3>
+<p>欢迎硕士生与博士生围绕以下问题开展研究：</p>
+<ul>
+<li>智能体为什么会失稳？如何让其长期稳定运行？</li>
+<li>如何度量大语言模型中的宏观复杂性与涌现结构？</li>
+<li>模型如何压缩知识，并在有限容量下保持任务相关信息？</li>
+</ul>
+<h3 id="你将参与">你将参与</h3>
+<ul>
+<li>建模大模型与智能体的长期状态、失稳机制和临界转变</li>
+<li>设计生成过程的在线诊断、状态调控与训练方法</li>
+<li>研究信息压缩、生成式聚类、知识索引与检索</li>
+<li>开展 AI × 复杂系统 × 信息论的交叉研究</li>
+</ul>
+<h3 id="我们希望你">我们希望你</h3>
+<ul>
+<li>对大模型 / AI 基础问题有兴趣</li>
+<li>具备数学基础（线性代数 / 概率 / 优化）</li>
+<li>有一定编程能力（Python / PyTorch）</li>
+<li>愿意长期投入基础研究</li>
+</ul>
+<h2 id="科研实习生长期">科研实习生（长期）</h2>
+<ul>
+<li>本科三年级及以上（上海地区优先）</li>
+<li>对大模型或智能体系统有兴趣</li>
+<li>每周 ≥ 2 天投入</li>
+<li>支持远程 / 线下（同济张江基地）</li>
+</ul>
+<h2 id="实验室资源">实验室资源</h2>
+<p>可使用的科研条件包括：</p>
+<ul>
+<li>科研项目支持与学生补贴</li>
+<li>同济大学 GPU 计算平台</li>
+<li>张江研究基地的科研办公与住宿空间</li>
+</ul>
+<h2 id="申请方式">申请方式</h2>
+<p>请发送以下材料至：📧 <a href="mailto:duxin@tongji.edu.cn">duxin@tongji.edu.cn</a></p>
+<ul>
+<li>简历（CV）</li>
+<li>成绩单</li>
+<li>研究兴趣说明（可选）</li>
+</ul>
+<h2 id="平台介绍上海自主智能无人系统科学中心">平台介绍：上海自主智能无人系统科学中心</h2>
+<img src="../../images/中心logo.png" alt="上海自主智能无人系统科学中心标志" width="500" loading="lazy">
+<p>中心由教育部依托同济大学设立，相关科研平台包括：</p>
+<ul>
+<li>自主智能无人系统<strong>全国重点实验室</strong></li>
+<li>国家自然科学基金委<strong>基础科学中心</strong></li>
+<li>教育部<strong>前沿科学中心</strong></li>
+<li>国家人工智能产教融合创新平台</li>
+</ul>
+<h2 id="学科与培养">学科与培养</h2>
+<ul>
+<li>全国首批“智能科学与技术”一级交叉学科博士点</li>
+<li>强调 AI + 复杂系统 + 工程系统的交叉培养</li>
+</ul>
+<h2 id="张江研究基地">张江研究基地</h2>
+<ul>
+<li>占地 43 亩，建筑面积 12.75 万平方米</li>
+</ul>
+<img src="../../images/张江基地.png" alt="同济大学张江基地" width="500" loading="lazy">
+<h2 id="算力平台">算力平台</h2>
+<ul>
+<li>投资数亿建设的大规模 GPU 算力中心（2025 已投入使用）</li>
+<li>20+ 台 NVIDIA DGX 系列服务器与智能体计算平台</li>
+</ul>
+<img src="../../images/算力平台1.png" alt="GPU 超算平台" width="800" loading="lazy">
+<img src="../../images/算力平台2.png" alt="GPU 超算平台" width="800" loading="lazy"></article></main><footer><span>© 2026 Xin Du</span><span>Tongji University · Shanghai</span></footer></div><script>(() => {
+	const STORAGE_KEY = 'atlab-typography-v3';
+	const defaults = {
+		font: 'lxgw',
+		readingSize: '16',
+		sidebarSize: '18',
+	};
+	const fonts = {
+		songti: {
+			family: '"Songti SC", "STSong", "Noto Serif CJK SC", "Source Han Serif SC", "SimSun", Georgia, serif',
+			label: '系统宋体',
+		},
+		kaiti: {
+			family: '"Kaiti SC", "STKaiti", "KaiTi", "Songti SC", serif',
+			label: '系统楷体',
+		},
+		fangsong: {
+			family: '"FangSong", "STFangsong", "Songti SC", "STSong", serif',
+			label: '系统仿宋',
+		},
+		heiti: {
+			family: '"PingFang SC", "Heiti SC", "STHeiti", "Microsoft YaHei", sans-serif',
+			label: '系统黑体',
+		},
+		notoSerif: {
+			family: '"Noto Serif SC", "Songti SC", "STSong", "SimSun", Georgia, serif',
+			label: '思源宋体',
+			url: 'https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&display=swap',
+		},
+		lxgw: {
+			family: '"LXGW WenKai", "Songti SC", "STSong", "SimSun", serif',
+			label: '霞鹜文楷',
+			url: 'https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/style.css',
+		},
+		notoSans: {
+			family: '"Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif',
+			label: '思源黑体',
+			url: 'https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap',
+		},
+		zcoolXiaoWei: {
+			family: '"ZCOOL XiaoWei", "Songti SC", "STSong", "SimSun", serif',
+			label: '站酷小薇体',
+			url: 'https://fonts.googleapis.com/css2?family=ZCOOL+XiaoWei&display=swap',
+		},
+		maShanZheng: {
+			family: '"Ma Shan Zheng", "Kaiti SC", "STKaiti", cursive',
+			label: '马善政毛笔体',
+			url: 'https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap',
+		},
+		longCang: {
+			family: '"Long Cang", "Kaiti SC", "STKaiti", cursive',
+			label: '龙藏体',
+			url: 'https://fonts.googleapis.com/css2?family=Long+Cang&display=swap',
+		},
+		zcoolQingKe: {
+			family: '"ZCOOL QingKe HuangYou", "Noto Sans SC", "PingFang SC", sans-serif',
+			label: '站酷庆科黄油体',
+			url: 'https://fonts.googleapis.com/css2?family=ZCOOL+QingKe+HuangYou&display=swap',
+		},
+		zcoolKuaiLe: {
+			family: '"ZCOOL KuaiLe", "Noto Sans SC", "PingFang SC", sans-serif',
+			label: '站酷快乐体',
+			url: 'https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap',
+		},
+	};
+	const readingSizes = new Set(['15', '16', '17', '18', '19', '20', '21', '22']);
+	const sidebarSizes = new Set(['16', '17', '18', '19', '20']);
+
+	const fontSelect = document.querySelector('[data-typography-font]');
+	const readingSelect = document.querySelector('[data-typography-reading-size]');
+	const sidebarSelect = document.querySelector('[data-typography-sidebar-size]');
+	const resetButton = document.querySelector('[data-typography-reset]');
+	const status = document.querySelector('[data-typography-status]');
+
+	if (!(fontSelect instanceof HTMLSelectElement)
+		|| !(readingSelect instanceof HTMLSelectElement)
+		|| !(sidebarSelect instanceof HTMLSelectElement)
+		|| !(resetButton instanceof HTMLButtonElement)) return;
+
+	const root = document.documentElement;
+
+	const normalizePreference = (preference) => ({
+		font: preference.font in fonts ? preference.font : defaults.font,
+		readingSize: readingSizes.has(String(preference.readingSize))
+			? String(preference.readingSize)
+			: defaults.readingSize,
+		sidebarSize: sidebarSizes.has(String(preference.sidebarSize))
+			? String(preference.sidebarSize)
+			: defaults.sidebarSize,
+	});
+
+	const readPreference = () => {
+		try {
+			const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+			return normalizePreference({ ...defaults, ...saved });
+		} catch {
+			return { ...defaults };
+		}
+	};
+
+	const savePreference = (preference) => {
+		try {
+			localStorage.setItem(STORAGE_KEY, JSON.stringify(preference));
+		} catch {
+			// Preferences still work for the current page when storage is unavailable.
+		}
+	};
+
+	const setStatus = (message) => {
+		if (status) status.textContent = message;
+	};
+
+	const ensureFontStylesheet = (key, font) => {
+		if (!font.url) {
+			setStatus(`${font.label} · 本机字体`);
+			return;
+		}
+
+		const id = `atlab-font-${key}`;
+		const existing = document.getElementById(id);
+		if (existing) {
+			setStatus(`${font.label} · 已加载`);
+			return;
+		}
+
+		setStatus(`${font.label} · 加载中…`);
+		const link = document.createElement('link');
+		link.id = id;
+		link.rel = 'stylesheet';
+		link.href = font.url;
+		link.addEventListener('load', () => setStatus(`${font.label} · 已加载`), { once: true });
+		link.addEventListener('error', () => setStatus(`${font.label} · 网络字体不可用，已回退宋体`), { once: true });
+		document.head.append(link);
+	};
+
+	const applyPreference = (preference, persist = true) => {
+		preference = normalizePreference(preference);
+		const font = fonts[preference.font] || fonts.songti;
+		root.style.setProperty('--site-font', font.family);
+		root.style.setProperty('--reading-size', `${preference.readingSize}px`);
+		root.style.setProperty('--sidebar-font-size', `${preference.sidebarSize}px`);
+
+		fontSelect.value = preference.font;
+		readingSelect.value = preference.readingSize;
+		sidebarSelect.value = preference.sidebarSize;
+		ensureFontStylesheet(fontSelect.value, font);
+
+		if (persist) savePreference({
+			font: fontSelect.value,
+			readingSize: readingSelect.value,
+			sidebarSize: sidebarSelect.value,
+		});
+	};
+
+	const currentPreference = () => ({
+		font: fontSelect.value,
+		readingSize: readingSelect.value,
+		sidebarSize: sidebarSelect.value,
+	});
+
+	fontSelect.addEventListener('change', () => applyPreference(currentPreference()));
+	readingSelect.addEventListener('change', () => applyPreference(currentPreference()));
+	sidebarSelect.addEventListener('change', () => applyPreference(currentPreference()));
+	resetButton.addEventListener('click', () => applyPreference({ ...defaults }));
+
+	applyPreference(readPreference(), false);
+})();
+</script></body></html>

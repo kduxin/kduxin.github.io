@@ -1,0 +1,213 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="ACL 2020: transferable stock vectors learned jointly from news and prices, then applied to modern portfolio optimization."><meta name="referrer" content="strict-origin-when-cross-origin"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; font-src 'self' data: https://fonts.gstatic.com https://cdn.jsdelivr.net; script-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests"><link rel="icon" href="/favicon.svg"><link id="atlab-font-lxgw" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/style.css"><title>Stock Embeddings Acquired from News Articles and Price History · @lab</title><link rel="stylesheet" href="/_astro/PageLayout.g3oEc1qX.css"></head><body><aside class="sidebar"><div class="sidebar-inner"><a class="brand" href="/en/"><strong>Xin Du</strong></a><nav class="side-nav" aria-label="Primary navigation"><p class="nav-heading">Explore</p><a href="/en/" class="nav-link"><span>Profile</span><small>01</small></a><a href="/en/attractor-lab/" class="nav-link"><span>@lab</span><small>02</small></a><p class="nav-group-heading">Research</p><div class="nav-children"><a href="/en/research/agent-dynamics/" class="nav-child"><span>Agent Dynamics</span><small>R1</small></a><a href="/en/research/language-fractal-dimension/" class="nav-child"><span>Foundation Models &amp; Complexity</span><small>R2</small></a><a href="/en/research/generative-retrieval/" class="nav-child"><span>Semantic Compression &amp; Clustering</span><small>R3</small></a><a href="/en/research/nonlinear-semantics-linear-models/" class="nav-child"><span>Nonlinear Semantics &amp; Linear LMs</span><small>R4</small></a><a href="/en/research/semantic-financial-markets/" class="nav-child"><span>Semantic Models of Financial Markets</span><small>R5</small></a></div></nav><details class="typography-controls" hidden><summary><span aria-hidden="true">Aa</span><span>Typography</span></summary><div class="typography-panel"><label><span>Typeface</span><select data-typography-font><option value="songti">System Songti</option><option value="kaiti">System Kaiti</option><option value="fangsong">System Fangsong</option><option value="heiti">System Heiti</option><option value="notoSerif">Noto Serif SC · Web</option><option value="lxgw">LXGW WenKai · Web</option><option value="notoSans">Noto Sans SC · Web</option><option value="zcoolXiaoWei">ZCOOL XiaoWei · Web</option><option value="maShanZheng">Ma Shan Zheng · Web</option><option value="longCang">Long Cang · Web</option><option value="zcoolQingKe">ZCOOL QingKe HuangYou · Web</option><option value="zcoolKuaiLe">ZCOOL KuaiLe · Web</option></select></label><label><span>Reading size</span><select data-typography-reading-size><option value="15">15 px</option><option value="16" selected>16 px</option><option value="17">17 px</option><option value="18">18 px</option><option value="19">19 px</option><option value="20">20 px</option><option value="21">21 px</option><option value="22">22 px</option></select></label><label><span>Sidebar size</span><select data-typography-sidebar-size><option value="16">16 px</option><option value="17">17 px</option><option value="18" selected>18 px</option><option value="19">19 px</option><option value="20">20 px</option></select></label><div class="typography-panel-footer"><small data-typography-status aria-live="polite"></small><button type="button" data-typography-reset>Reset</button></div></div></details><a class="language-link" href="/zh/papers/stock-embeddings/" hreflang="zh-CN"><span aria-hidden="true">文</span>中文</a><div class="institution"><span>TONGJI UNIVERSITY</span><small>Shanghai Research Institute for Intelligent Autonomous Systems</small></div></div></aside><header class="mobile-header"><a class="mobile-brand" href="/en/">Xin Du · 杜鑫</a><details class="mobile-menu"><summary>Menu</summary><nav aria-label="Mobile navigation"><a href="/en/">Profile</a><a href="/en/attractor-lab/">@lab</a><span class="mobile-menu-group">Research</span><a class="mobile-menu-child" href="/en/research/agent-dynamics/">Agent Dynamics</a><a class="mobile-menu-child" href="/en/research/language-fractal-dimension/">Foundation Models &amp; Complexity</a><a class="mobile-menu-child" href="/en/research/generative-retrieval/">Semantic Compression &amp; Clustering</a><a class="mobile-menu-child" href="/en/research/nonlinear-semantics-linear-models/">Nonlinear Semantics &amp; Linear LMs</a><a class="mobile-menu-child" href="/en/research/semantic-financial-markets/">Semantic Models of Financial Markets</a><a href="/zh/papers/stock-embeddings/" hreflang="zh-CN">中文</a></nav></details></header><div class="page-shell"><main><article class="page-content research-page paper-page"><p class="paper-kicker">ACL 2020 · Semantic Models of Financial Markets</p>
+<h1 id="stock-embeddings-acquired-from-news-articles-and-price-history-and-an-application-to-portfolio-optimization">Stock Embeddings Acquired from News Articles and Price History, and an Application to Portfolio Optimization</h1>
+<p class="paper-byline">Xin Du · Kumiko Tanaka-Ishii</p>
+<p class="research-deck">The effect of news is separated from a prediction network into extractable and transferable stock vectors. The same representation explains news–price relations and enters a portfolio risk matrix directly.</p>
+<div class="paper-actions">
+  <a href="https://aclanthology.org/2020.acl-main.307/">Paper · ACL Anthology</a>
+  <a href="/en/research/semantic-financial-markets/">Research · Semantic Models of Financial Markets</a>
+</div>
+<h2 id="a-prediction-model-is-not-a-market-representation">A Prediction Model Is Not a Market Representation</h2>
+<p>Neural models that predict market direction from news entangle text, prices, and stock identity throughout their parameters. Even when prediction improves, they do not directly reveal which news matters to which asset, why assets share risk, or whether the learned relation transfers beyond the original task. This paper makes the stock itself a learnable object: every asset has a vector <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>s</mi><mi>j</mi></msub></mrow><annotation encoding="application/x-tex">s_j</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7167em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal">s</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0572em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span> whose geometry is jointly supervised by news semantics and price movement.</p>
+<p>The formulation also addresses the difficulty of short-term financial prediction. Explaining realized movement from contemporaneous information is a more controlled test of whether a model captures the relation between text and market behaviour. The paper separates a classification setting for learning the representation from a strictly historical prediction setting used only in downstream portfolio evaluation.</p>
+<h2 id="how-a-stock-vector-selects-news">How a Stock Vector Selects News</h2>
+<p>Article <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi></mrow><annotation encoding="application/x-tex">i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6595em;"></span><span class="mord mathnormal">i</span></span></span></span> is encoded as a key–value pair <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><msubsup><mi>n</mi><mi>i</mi><mi>K</mi></msubsup><mo separator="true">,</mo><msubsup><mi>n</mi><mi>i</mi><mi>V</mi></msubsup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(n_i^K,n_i^V)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.1em;vertical-align:-0.2587em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8413em;"><span style="top:-2.4413em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0715em;">K</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2587em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8413em;"><span style="top:-2.4413em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.2222em;">V</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2587em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span>. Its relevance to stock <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>j</mi></mrow><annotation encoding="application/x-tex">j</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.854em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.0572em;">j</span></span></span></span> is</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mrow><mi mathvariant="normal">score</mi><mo>⁡</mo></mrow><mrow><mi>i</mi><mo separator="true">,</mo><mi>j</mi></mrow></msub><mo>=</mo><mo stretchy="false">(</mo><msubsup><mi>n</mi><mi>i</mi><mi>K</mi></msubsup><msup><mo stretchy="false">)</mo><mi mathvariant="normal">⊤</mi></msup><msub><mi>s</mi><mi>j</mi></msub><mo separator="true">,</mo><mspace width="2em"></mspace><msubsup><mi>α</mi><mi>i</mi><mi>j</mi></msubsup><mo>=</mo><mfrac><mrow><mi>exp</mi><mo>⁡</mo><mo stretchy="false">(</mo><msub><mrow><mi mathvariant="normal">score</mi><mo>⁡</mo></mrow><mrow><mi>i</mi><mo separator="true">,</mo><mi>j</mi></mrow></msub><mo stretchy="false">)</mo></mrow><mrow><munder><mo>∑</mo><msup><mi>i</mi><mo mathvariant="normal" lspace="0em" rspace="0em">′</mo></msup></munder><mi>exp</mi><mo>⁡</mo><mo stretchy="false">(</mo><msub><mrow><mi mathvariant="normal">score</mi><mo>⁡</mo></mrow><mrow><msup><mi>i</mi><mo mathvariant="normal" lspace="0em" rspace="0em">′</mo></msup><mo separator="true">,</mo><mi>j</mi></mrow></msub><mo stretchy="false">)</mo></mrow></mfrac><mi mathvariant="normal">.</mi></mrow><annotation encoding="application/x-tex">\operatorname{score}_{i,j}=(n_i^K)^\top s_j,
+\qquad
+\alpha_i^j
+=
+\frac{\exp(\operatorname{score}_{i,j})}
+{\sum_{i'}\exp(\operatorname{score}_{i',j})}.</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7167em;vertical-align:-0.2861em;"></span><span class="mop"><span class="mop"><span class="mord mathrm">score</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.0572em;">j</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.2287em;vertical-align:-0.2861em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8913em;"><span style="top:-2.453em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0715em;">K</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.247em;"><span></span></span></span></span></span></span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8991em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">⊤</span></span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal">s</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0572em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:2em;"></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0037em;">α</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.9426em;"><span style="top:-2.4231em;margin-left:-0.0037em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span><span style="top:-3.1809em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0572em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2769em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.4127em;vertical-align:-0.9857em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.427em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:0em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1783em;"><span style="top:-2.4003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6828em;"><span style="top:-2.786em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2997em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mop">exp</span><span class="mopen">(</span><span class="mop"><span class="mop"><span class="mord mathrm">score</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.328em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6828em;"><span style="top:-2.786em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span></span></span></span></span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.0572em;">j</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mop">exp</span><span class="mopen">(</span><span class="mop"><span class="mop"><span class="mord mathrm">score</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.0572em;">j</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.9857em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mord">.</span></span></span></span></span>
+<p>The weighted news value becomes the stock’s market state:</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msubsup><mi>m</mi><mi>t</mi><mi>j</mi></msubsup><mo>=</mo><munder><mo>∑</mo><mi>i</mi></munder><msubsup><mi>α</mi><mi>i</mi><mi>j</mi></msubsup><msubsup><mi>n</mi><mi>i</mi><mi>V</mi></msubsup><mi mathvariant="normal">.</mi></mrow><annotation encoding="application/x-tex">m_t^j=\sum_i\alpha_i^j n_i^V.</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.1883em;vertical-align:-0.2458em;"></span><span class="mord"><span class="mord mathnormal">m</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.9426em;"><span style="top:-2.4542em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span><span style="top:-3.1809em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0572em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2458em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.3277em;vertical-align:-1.2777em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.05em;"><span style="top:-1.8723em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span><span style="top:-3.05em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.2777em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0037em;">α</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.9426em;"><span style="top:-2.4231em;margin-left:-0.0037em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span><span style="top:-3.1809em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0572em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2769em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8913em;"><span style="top:-2.453em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.2222em;">V</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.247em;"><span></span></span></span></span></span></span><span class="mord">.</span></span></span></span></span>
+<p>The same news pool produces a different state for every stock. Because <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>s</mi><mi>j</mi></msub></mrow><annotation encoding="application/x-tex">s_j</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7167em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal">s</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0572em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span> is trained through price supervision rather than a literal ticker match, it can select related articles that do not name the company. The stock vector grounds a financial symbol in external market behaviour.</p>
+<figure class="research-figure research-figure--compact">
+  <img src="../../../images/acl-stock-embedding-model.png" alt="Comparison of stock-specific and shared price-movement classifiers" loading="eager">
+  <figcaption>A shared classifier pools supervision across stocks, while stock embeddings retain individual differences and must encode common news structure.</figcaption>
+</figure>
+<h2 id="a-shared-classifier-addresses-small-samples">A Shared Classifier Addresses Small Samples</h2>
+<p>Daily observations give each stock only a few thousand supervised examples, making separate classifiers prone to overfitting. The model shares one Bi-GRU price-movement classifier across all stocks and expresses stock specificity only through <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>s</mi><mi>j</mi></msub></mrow><annotation encoding="application/x-tex">s_j</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7167em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal">s</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0572em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span> in the news attention. The classifier’s effective sample size grows by approximately 50–100 times and can learn cross-stock structure.</p>
+<p>Experiments use roughly 400,000 WSJ headlines and 550,000 Reuters/Bloomberg headlines, covering 89 and 50 S&#x26;P 500 stocks. Combining classifier sharing with key–value news representations reaches <strong>68.8%</strong> mean classification accuracy on the full Reuters/Bloomberg data. Ablations show that the two mechanisms together resist limited-sample overfitting better than news weighting alone.</p>
+<h2 id="transfer-to-modern-portfolio-theory">Transfer to Modern Portfolio Theory</h2>
+<p>The Markowitz mean–variance problem is</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><munder><mrow><mi>min</mi><mo>⁡</mo></mrow><mi>w</mi></munder><msup><mi>w</mi><mi mathvariant="normal">⊤</mi></msup><mi mathvariant="normal">Σ</mi><mi>w</mi><mo separator="true">,</mo><mspace width="2em"></mspace><msup><mi>w</mi><mi mathvariant="normal">⊤</mi></msup><mi>r</mi><mo>=</mo><mi>E</mi><mo separator="true">,</mo><mspace width="1em"></mspace><msup><mi>w</mi><mi mathvariant="normal">⊤</mi></msup><mn mathvariant="bold">1</mn><mo>=</mo><mn>1</mn><mo separator="true">,</mo><mspace width="1em"></mspace><mn>0</mn><mo>≤</mo><msub><mi>w</mi><mi>j</mi></msub><mo>≤</mo><mn>1.</mn></mrow><annotation encoding="application/x-tex">\min_w w^\top\Sigma w,
+\qquad
+w^\top r=E,\quad
+w^\top\mathbf 1=1,\quad
+0\leq w_j\leq1.</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.5991em;vertical-align:-0.7em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6679em;"><span style="top:-2.4em;margin-left:0em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0269em;">w</span></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span><span class="mop">min</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0269em;">w</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8991em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">⊤</span></span></span></span></span></span></span></span><span class="mord">Σ</span><span class="mord mathnormal" style="margin-right:0.0269em;">w</span><span class="mpunct">,</span><span class="mspace" style="margin-right:2em;"></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0269em;">w</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8991em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">⊤</span></span></span></span></span></span></span></span><span class="mord mathnormal" style="margin-right:0.0278em;">r</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.0935em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.0576em;">E</span><span class="mpunct">,</span><span class="mspace" style="margin-right:1em;"></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0269em;">w</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8991em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">⊤</span></span></span></span></span></span></span></span><span class="mord mathbf">1</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8389em;vertical-align:-0.1944em;"></span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:1em;"></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">0</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.9221em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0269em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0269em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0572em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1.</span></span></span></span></span>
+<p>The standard risk matrix <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Σ</mi></mrow><annotation encoding="application/x-tex">\Sigma</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">Σ</span></span></span></span> is estimated from historical return covariance and is sensitive to noise and finite windows. The paper constructs a risk matrix from cosine relations among stock embeddings and compares it with price-only covariance, Word2Vec, BERT, and simple text–price fusion. Each annual portfolio uses only data available before its test period.</p>
+<figure class="research-figure">
+  <img src="../../../images/acl-stock-portfolio-results.png" alt="Portfolio returns on WSJ and Reuters Bloomberg data" loading="lazy">
+  <figcaption>On Reuters/Bloomberg data, stock-embedding portfolios achieve average realized annual returns 2.8 times the historical-covariance baseline.</figcaption>
+</figure>
+<p>Stock-embedding portfolios outperform controls across most expected-return constraints. On Reuters/Bloomberg, mean realized annual return is <strong>35.5%</strong>, compared with <strong>12.7%</strong> for the historical-covariance baseline—a factor of approximately <strong>2.8</strong>. Gains on WSJ are smaller but positive. Simply multiplying text representations with covariance is unstable; the useful geometry is the one supervised jointly by price movement.</p>
+<h2 id="finding-and-boundary">Finding and Boundary</h2>
+<p>The contribution is not a fixed trading strategy. It turns intermediate knowledge in a financial NLP model into an operational object: stock vectors can be extracted, visualized, and inserted into an optimization problem outside the training classifier. This interface motivates later work on tail risk.</p>
+<p>The results are annual rolling simulations on historical data and omit transaction costs, market impact, and many practical constraints. They are not guarantees of future returns. Contemporaneous news is used only for representation learning in the classification setting. The next question is whether text systematically supplements the rare events and structural changes that ordinary price covariance misses.</p>
+<p><a class="paper-back" href="/en/research/semantic-financial-markets/">← Semantic Models of Financial Markets</a></p></article></main><footer><span>© 2026 Xin Du</span><span>Tongji University · Shanghai</span></footer></div><script>(() => {
+	const STORAGE_KEY = 'atlab-typography-v3';
+	const defaults = {
+		font: 'lxgw',
+		readingSize: '16',
+		sidebarSize: '18',
+	};
+	const fonts = {
+		songti: {
+			family: '"Songti SC", "STSong", "Noto Serif CJK SC", "Source Han Serif SC", "SimSun", Georgia, serif',
+			label: '系统宋体',
+		},
+		kaiti: {
+			family: '"Kaiti SC", "STKaiti", "KaiTi", "Songti SC", serif',
+			label: '系统楷体',
+		},
+		fangsong: {
+			family: '"FangSong", "STFangsong", "Songti SC", "STSong", serif',
+			label: '系统仿宋',
+		},
+		heiti: {
+			family: '"PingFang SC", "Heiti SC", "STHeiti", "Microsoft YaHei", sans-serif',
+			label: '系统黑体',
+		},
+		notoSerif: {
+			family: '"Noto Serif SC", "Songti SC", "STSong", "SimSun", Georgia, serif',
+			label: '思源宋体',
+			url: 'https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&display=swap',
+		},
+		lxgw: {
+			family: '"LXGW WenKai", "Songti SC", "STSong", "SimSun", serif',
+			label: '霞鹜文楷',
+			url: 'https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/style.css',
+		},
+		notoSans: {
+			family: '"Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif',
+			label: '思源黑体',
+			url: 'https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap',
+		},
+		zcoolXiaoWei: {
+			family: '"ZCOOL XiaoWei", "Songti SC", "STSong", "SimSun", serif',
+			label: '站酷小薇体',
+			url: 'https://fonts.googleapis.com/css2?family=ZCOOL+XiaoWei&display=swap',
+		},
+		maShanZheng: {
+			family: '"Ma Shan Zheng", "Kaiti SC", "STKaiti", cursive',
+			label: '马善政毛笔体',
+			url: 'https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap',
+		},
+		longCang: {
+			family: '"Long Cang", "Kaiti SC", "STKaiti", cursive',
+			label: '龙藏体',
+			url: 'https://fonts.googleapis.com/css2?family=Long+Cang&display=swap',
+		},
+		zcoolQingKe: {
+			family: '"ZCOOL QingKe HuangYou", "Noto Sans SC", "PingFang SC", sans-serif',
+			label: '站酷庆科黄油体',
+			url: 'https://fonts.googleapis.com/css2?family=ZCOOL+QingKe+HuangYou&display=swap',
+		},
+		zcoolKuaiLe: {
+			family: '"ZCOOL KuaiLe", "Noto Sans SC", "PingFang SC", sans-serif',
+			label: '站酷快乐体',
+			url: 'https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap',
+		},
+	};
+	const readingSizes = new Set(['15', '16', '17', '18', '19', '20', '21', '22']);
+	const sidebarSizes = new Set(['16', '17', '18', '19', '20']);
+
+	const fontSelect = document.querySelector('[data-typography-font]');
+	const readingSelect = document.querySelector('[data-typography-reading-size]');
+	const sidebarSelect = document.querySelector('[data-typography-sidebar-size]');
+	const resetButton = document.querySelector('[data-typography-reset]');
+	const status = document.querySelector('[data-typography-status]');
+
+	if (!(fontSelect instanceof HTMLSelectElement)
+		|| !(readingSelect instanceof HTMLSelectElement)
+		|| !(sidebarSelect instanceof HTMLSelectElement)
+		|| !(resetButton instanceof HTMLButtonElement)) return;
+
+	const root = document.documentElement;
+
+	const normalizePreference = (preference) => ({
+		font: preference.font in fonts ? preference.font : defaults.font,
+		readingSize: readingSizes.has(String(preference.readingSize))
+			? String(preference.readingSize)
+			: defaults.readingSize,
+		sidebarSize: sidebarSizes.has(String(preference.sidebarSize))
+			? String(preference.sidebarSize)
+			: defaults.sidebarSize,
+	});
+
+	const readPreference = () => {
+		try {
+			const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+			return normalizePreference({ ...defaults, ...saved });
+		} catch {
+			return { ...defaults };
+		}
+	};
+
+	const savePreference = (preference) => {
+		try {
+			localStorage.setItem(STORAGE_KEY, JSON.stringify(preference));
+		} catch {
+			// Preferences still work for the current page when storage is unavailable.
+		}
+	};
+
+	const setStatus = (message) => {
+		if (status) status.textContent = message;
+	};
+
+	const ensureFontStylesheet = (key, font) => {
+		if (!font.url) {
+			setStatus(`${font.label} · 本机字体`);
+			return;
+		}
+
+		const id = `atlab-font-${key}`;
+		const existing = document.getElementById(id);
+		if (existing) {
+			setStatus(`${font.label} · 已加载`);
+			return;
+		}
+
+		setStatus(`${font.label} · 加载中…`);
+		const link = document.createElement('link');
+		link.id = id;
+		link.rel = 'stylesheet';
+		link.href = font.url;
+		link.addEventListener('load', () => setStatus(`${font.label} · 已加载`), { once: true });
+		link.addEventListener('error', () => setStatus(`${font.label} · 网络字体不可用，已回退宋体`), { once: true });
+		document.head.append(link);
+	};
+
+	const applyPreference = (preference, persist = true) => {
+		preference = normalizePreference(preference);
+		const font = fonts[preference.font] || fonts.songti;
+		root.style.setProperty('--site-font', font.family);
+		root.style.setProperty('--reading-size', `${preference.readingSize}px`);
+		root.style.setProperty('--sidebar-font-size', `${preference.sidebarSize}px`);
+
+		fontSelect.value = preference.font;
+		readingSelect.value = preference.readingSize;
+		sidebarSelect.value = preference.sidebarSize;
+		ensureFontStylesheet(fontSelect.value, font);
+
+		if (persist) savePreference({
+			font: fontSelect.value,
+			readingSize: readingSelect.value,
+			sidebarSize: sidebarSelect.value,
+		});
+	};
+
+	const currentPreference = () => ({
+		font: fontSelect.value,
+		readingSize: readingSelect.value,
+		sidebarSize: sidebarSelect.value,
+	});
+
+	fontSelect.addEventListener('change', () => applyPreference(currentPreference()));
+	readingSelect.addEventListener('change', () => applyPreference(currentPreference()));
+	sidebarSelect.addEventListener('change', () => applyPreference(currentPreference()));
+	resetButton.addEventListener('click', () => applyPreference({ ...defaults }));
+
+	applyPreference(readPreference(), false);
+})();
+</script></body></html>

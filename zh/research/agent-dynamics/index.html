@@ -1,0 +1,195 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="研究长时生成与智能体循环中的几何坍缩、相变、临界预警和状态空间控制。"><meta name="referrer" content="strict-origin-when-cross-origin"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; font-src 'self' data: https://fonts.gstatic.com https://cdn.jsdelivr.net; script-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests"><link rel="icon" href="/favicon.svg"><link id="atlab-font-lxgw" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/style.css"><title>智能体动力学 · @lab</title><link rel="stylesheet" href="/_astro/PageLayout.g3oEc1qX.css"></head><body><aside class="sidebar"><div class="sidebar-inner"><a class="brand" href="/"><strong>Xin Du</strong></a><nav class="side-nav" aria-label="主导航"><p class="nav-heading">导航</p><a href="/" class="nav-link"><span>个人主页</span><small>01</small></a><a href="/zh/attractor-lab/" class="nav-link"><span>@lab</span><small>02</small></a><p class="nav-group-heading">研究方向</p><div class="nav-children"><a href="/zh/research/agent-dynamics/" class="nav-child active" aria-current="page"><span>智能体动力学</span><small>R1</small></a><a href="/zh/research/language-fractal-dimension/" class="nav-child"><span>大模型与复杂性</span><small>R2</small></a><a href="/zh/research/generative-retrieval/" class="nav-child"><span>语义压缩与聚类</span><small>R3</small></a><a href="/zh/research/nonlinear-semantics-linear-models/" class="nav-child"><span>非线性语义表示与线性语言模型</span><small>R4</small></a><a href="/zh/research/semantic-financial-markets/" class="nav-child"><span>复杂金融市场的语义模型</span><small>R5</small></a></div></nav><details class="typography-controls" hidden><summary><span aria-hidden="true">Aa</span><span>排版调试</span></summary><div class="typography-panel"><label><span>全站字体</span><select data-typography-font><option value="songti">系统宋体</option><option value="kaiti">系统楷体</option><option value="fangsong">系统仿宋</option><option value="heiti">系统黑体</option><option value="notoSerif">思源宋体 · 网络</option><option value="lxgw">霞鹜文楷 · 网络</option><option value="notoSans">思源黑体 · 网络</option><option value="zcoolXiaoWei">站酷小薇体 · 网络</option><option value="maShanZheng">马善政毛笔体 · 网络</option><option value="longCang">龙藏体 · 网络</option><option value="zcoolQingKe">站酷庆科黄油体 · 网络</option><option value="zcoolKuaiLe">站酷快乐体 · 网络</option></select></label><label><span>正文字号</span><select data-typography-reading-size><option value="15">15 px</option><option value="16" selected>16 px</option><option value="17">17 px</option><option value="18">18 px</option><option value="19">19 px</option><option value="20">20 px</option><option value="21">21 px</option><option value="22">22 px</option></select></label><label><span>导航字号</span><select data-typography-sidebar-size><option value="16">16 px</option><option value="17">17 px</option><option value="18" selected>18 px</option><option value="19">19 px</option><option value="20">20 px</option></select></label><div class="typography-panel-footer"><small data-typography-status aria-live="polite"></small><button type="button" data-typography-reset>恢复默认</button></div></div></details><a class="language-link" href="/en/research/agent-dynamics/" hreflang="en"><span aria-hidden="true">文</span>English</a><div class="institution"><span>TONGJI UNIVERSITY</span><small>Shanghai Research Institute for Intelligent Autonomous Systems</small></div></div></aside><header class="mobile-header"><a class="mobile-brand" href="/">Xin Du · 杜鑫</a><details class="mobile-menu"><summary>菜单</summary><nav aria-label="移动导航"><a href="/">个人主页</a><a href="/zh/attractor-lab/">@lab</a><span class="mobile-menu-group">研究方向</span><a class="mobile-menu-child" href="/zh/research/agent-dynamics/">智能体动力学</a><a class="mobile-menu-child" href="/zh/research/language-fractal-dimension/">大模型与复杂性</a><a class="mobile-menu-child" href="/zh/research/generative-retrieval/">语义压缩与聚类</a><a class="mobile-menu-child" href="/zh/research/nonlinear-semantics-linear-models/">非线性语义表示与线性语言模型</a><a class="mobile-menu-child" href="/zh/research/semantic-financial-markets/">复杂金融市场的语义模型</a><a href="/en/research/agent-dynamics/" hreflang="en">English</a></nav></details></header><div class="page-shell"><main><article class="page-content research-page"><h1 id="智能体动力学">智能体动力学</h1>
+<p class="research-deck">长时生成与智能体循环并非一系列相互独立的预测，而是由内部状态、记忆、工具反馈和环境输入共同驱动的非平稳动力过程。研究关注三个相互关联的问题：轨迹为何失稳，失稳前是否出现可测量的临界信号，以及能否通过低秩、在线的状态干预恢复系统的可达性。</p>
+<p class="research-keywords"><span>关键词</span> 状态空间 · 几何坍缩 · 相变 · 临界性 · 在线控制</p>
+<h2 id="从局部预测到长程动力学">从局部预测到长程动力学</h2>
+<p>自回归模型在每一步只计算 next-token 分布，但它的长期行为由完整历史决定。局部概率可以保持平滑，生成轨迹却可能逐渐进入重复、内容停滞或策略锁定。这一尺度差异使 token entropy、重复率等局部指标难以回答一个更基本的问题：模型是否仍然能够访问足够多的内部状态。</p>
+<p>困难在于，长程失稳往往并非由一次明显的错误触发。很小的历史依赖偏置会在递归解码中累积，前一步产生的状态又成为下一步的条件；当偏置沿少数缓慢衰减的方向持续增强时，局部上仍然合理的预测可以汇聚为宏观上的循环或停滞。因此，单步困惑度和输出多样性只描述轨迹的投影，不能区分“低随机性但持续推进”与“内部自由度已经丢失”。</p>
+<p>在生成模型中，KV cache 可以视为随时间增长的高维状态；在更一般的 Agent loop 中，状态还包括工作记忆、规划结果、工具返回和环境观测。真正的技术困难是从这些异质、非平稳变量中构造可比较的轨迹，并区分普通随机涨落、渐进退化和吸引子切换。</p>
+<h2 id="几何坍缩与状态空间可达性">几何坍缩与状态空间可达性</h2>
+<p>我们在 <a href="/zh/papers/escaping-mode-collapse">ICML 2026 论文</a> 中将模式坍缩重新表述为 <strong>state-space accessibility</strong> 的下降。生成发生退化时，内部轨迹被限制在低维亚稳区域；相关维度估计轨迹中仍然活跃的有效自由度。显式循环、逐渐丧失多样性和过早收敛在符号层面不同，却都伴随轨迹维度下降。</p>
+<p>具体而言，每一步的 next-token log-probability 向量构成一条随解码推进的概率轨迹。有限时间相关维度由不同尺度下轨迹点的邻域复现率估计：如果新的状态不断探索可达空间，维度维持在较高水平；如果状态反复返回同一狭窄区域，相关积分的标度斜率会下降。在线更新只需对新增状态与已有轨迹比较，单步计算由朴素的二次累积降为随当前长度线性增长，使其可以作为运行时信号。</p>
+<p>这一表述把研究对象从“哪些 token 被重复选择”转移到“内部动力学为何失去可达方向”。它也解释了为什么仅修改输出概率有时无法消除长程退化：解码器改变了局部选择，却没有直接改变已经形成的低维内部轨迹。</p>
+<figure class="research-figure">
+  <img src="../../../images/degeneration-example.png" alt="长文本生成进入重复循环的示例" loading="eager">
+  <figcaption>图 1. 长程生成进入重复循环。表面重复是观测结果，研究对象是其背后的轨迹降维与亚稳态形成。</figcaption>
+</figure>
+<h2 id="从诊断到状态调控">从诊断到状态调控</h2>
+<p>相关维度给出诊断，但并不直接说明应修改哪一部分状态。论文中的最小动力模型表明：历史依赖偏置在低温解码中可能逐步占据主导，系统因而被吸入低维区域；较弱的阻尼已经足以恢复可达性。临界区附近，决定长期行为的并非瞬时幅度最大的方向，而是衰减最慢、能够在历史中持续积累的方向。</p>
+<p>基于这一观察，我们提出 Reinforced Mode Regulation（RMR）。该方法通过有界谱广义特征值问题，在 Transformer value cache 中识别具有异常时间持续性的低秩子空间，再对这些方向实施选择性阻尼。实现采用分块幂迭代与正交化，不需要显式构造高维稠密矩阵；主要开销来自 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>T</mi><mi>D</mi><mi>c</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(TDc)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">O</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.1389em;">T</span><span class="mord mathnormal" style="margin-right:0.0278em;">D</span><span class="mord mathnormal">c</span><span class="mclose">)</span></span></span></span> 的投影和 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>D</mi><msup><mi>c</mi><mn>2</mn></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(Dc^2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0641em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">O</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.0278em;">D</span><span class="mord"><span class="mord mathnormal">c</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span> 的正交化，其中 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi></mrow><annotation encoding="application/x-tex">c</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">c</span></span></span></span> 是很小的调控秩。干预只发生在推理阶段，不依赖重复词表或重新训练。</p>
+<p>实验覆盖多个语言模型和多种低熵解码条件。标准解码通常在约 <strong>2.0 nats/step</strong> 的熵率附近发生坍缩，RMR 可将稳定生成推进至 <strong>0.8 nats/step</strong>；温度为 0.7 时，非坍缩率由 <strong>8%</strong> 提升至 <strong>56%</strong>，目标熵为 1.0 时由 <strong>5%</strong> 提升至 <strong>33%</strong>。在未坍缩样本上，连贯性、句法与信息推进没有出现显著下降。结果支持的结论是：长程稳定性可以通过内部状态调控改善，而不必以普遍增加输出随机性为代价。</p>
+<h2 id="相变临界性与预警">相变、临界性与预警</h2>
+<p>随着温度、熵率和状态阻尼等控制变量变化，生成会从持续推进切换到低维坍缩，表现出阈值、亚稳态和突变式轨迹重组。最小模型把这一现象解释为持久方向由受控涨落转为主导运动的临界过渡；RMR 则通过削弱这些慢模改变稳定边界。</p>
+<p>这一证据提示相变式机制，但尚不足以将其等同于严格的统计物理相变。下一步需要确定可跨模型比较的序参量，并检验临界减速、方差增大、自相关增强、滞后效应及有限尺度标度。如果这些判据成立，系统接近失稳时应先出现恢复速度下降和谱能量集中，而非等到文本已经重复后才被检测。</p>
+<p>一旦建立可靠判据，失稳就不再只能事后识别。相关维度、谱集中度和复现率可以组成在线观测量；控制器则依据其变化触发状态阻尼、记忆刷新或重规划。研究目标不是消除所有波动，而是在保留任务能力的前提下移动失稳阈值。</p>
+<h2 id="向智能体系统扩展">向智能体系统扩展</h2>
+<p>长文本生成提供了一个可控的最小系统，而智能体把相同问题扩展到开放环境。工具调用的结果会重新进入上下文，错误计划可能被记忆固化，多个智能体之间的反馈还会产生同步、竞争和集体吸引子。这里的核心难点是状态维度不断变化，环境输入又使动力学非平稳，因而不能直接照搬固定轨迹上的统计量。</p>
+<p>当前路线是把相关维度与谱持续性推广到分层状态：分别刻画语言状态、记忆状态和工具交互，再研究它们之间的耦合。应用目标包括长上下文生成监测、规划锁定预警、无效工具循环检测，以及在不重启任务的前提下进行闭环状态控制。现有结果限于解码时干预；训练阶段如何塑造这些慢模，仍是待研究的问题。</p>
+<h2 id="相关论文">相关论文</h2>
+<p><strong>Xin Du and Kumiko Tanaka-Ishii.</strong> <a href="/zh/papers/escaping-mode-collapse">Escaping Mode Collapse in LLM Generation via Geometric Regulation — 论文介绍</a>. <em>ICML 2026</em>. <a href="https://arxiv.org/abs/2605.00435">arXiv</a></p></article></main><footer><span>© 2026 Xin Du</span><span>Tongji University · Shanghai</span></footer></div><script>(() => {
+	const STORAGE_KEY = 'atlab-typography-v3';
+	const defaults = {
+		font: 'lxgw',
+		readingSize: '16',
+		sidebarSize: '18',
+	};
+	const fonts = {
+		songti: {
+			family: '"Songti SC", "STSong", "Noto Serif CJK SC", "Source Han Serif SC", "SimSun", Georgia, serif',
+			label: '系统宋体',
+		},
+		kaiti: {
+			family: '"Kaiti SC", "STKaiti", "KaiTi", "Songti SC", serif',
+			label: '系统楷体',
+		},
+		fangsong: {
+			family: '"FangSong", "STFangsong", "Songti SC", "STSong", serif',
+			label: '系统仿宋',
+		},
+		heiti: {
+			family: '"PingFang SC", "Heiti SC", "STHeiti", "Microsoft YaHei", sans-serif',
+			label: '系统黑体',
+		},
+		notoSerif: {
+			family: '"Noto Serif SC", "Songti SC", "STSong", "SimSun", Georgia, serif',
+			label: '思源宋体',
+			url: 'https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&display=swap',
+		},
+		lxgw: {
+			family: '"LXGW WenKai", "Songti SC", "STSong", "SimSun", serif',
+			label: '霞鹜文楷',
+			url: 'https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/style.css',
+		},
+		notoSans: {
+			family: '"Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif',
+			label: '思源黑体',
+			url: 'https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap',
+		},
+		zcoolXiaoWei: {
+			family: '"ZCOOL XiaoWei", "Songti SC", "STSong", "SimSun", serif',
+			label: '站酷小薇体',
+			url: 'https://fonts.googleapis.com/css2?family=ZCOOL+XiaoWei&display=swap',
+		},
+		maShanZheng: {
+			family: '"Ma Shan Zheng", "Kaiti SC", "STKaiti", cursive',
+			label: '马善政毛笔体',
+			url: 'https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap',
+		},
+		longCang: {
+			family: '"Long Cang", "Kaiti SC", "STKaiti", cursive',
+			label: '龙藏体',
+			url: 'https://fonts.googleapis.com/css2?family=Long+Cang&display=swap',
+		},
+		zcoolQingKe: {
+			family: '"ZCOOL QingKe HuangYou", "Noto Sans SC", "PingFang SC", sans-serif',
+			label: '站酷庆科黄油体',
+			url: 'https://fonts.googleapis.com/css2?family=ZCOOL+QingKe+HuangYou&display=swap',
+		},
+		zcoolKuaiLe: {
+			family: '"ZCOOL KuaiLe", "Noto Sans SC", "PingFang SC", sans-serif',
+			label: '站酷快乐体',
+			url: 'https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap',
+		},
+	};
+	const readingSizes = new Set(['15', '16', '17', '18', '19', '20', '21', '22']);
+	const sidebarSizes = new Set(['16', '17', '18', '19', '20']);
+
+	const fontSelect = document.querySelector('[data-typography-font]');
+	const readingSelect = document.querySelector('[data-typography-reading-size]');
+	const sidebarSelect = document.querySelector('[data-typography-sidebar-size]');
+	const resetButton = document.querySelector('[data-typography-reset]');
+	const status = document.querySelector('[data-typography-status]');
+
+	if (!(fontSelect instanceof HTMLSelectElement)
+		|| !(readingSelect instanceof HTMLSelectElement)
+		|| !(sidebarSelect instanceof HTMLSelectElement)
+		|| !(resetButton instanceof HTMLButtonElement)) return;
+
+	const root = document.documentElement;
+
+	const normalizePreference = (preference) => ({
+		font: preference.font in fonts ? preference.font : defaults.font,
+		readingSize: readingSizes.has(String(preference.readingSize))
+			? String(preference.readingSize)
+			: defaults.readingSize,
+		sidebarSize: sidebarSizes.has(String(preference.sidebarSize))
+			? String(preference.sidebarSize)
+			: defaults.sidebarSize,
+	});
+
+	const readPreference = () => {
+		try {
+			const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+			return normalizePreference({ ...defaults, ...saved });
+		} catch {
+			return { ...defaults };
+		}
+	};
+
+	const savePreference = (preference) => {
+		try {
+			localStorage.setItem(STORAGE_KEY, JSON.stringify(preference));
+		} catch {
+			// Preferences still work for the current page when storage is unavailable.
+		}
+	};
+
+	const setStatus = (message) => {
+		if (status) status.textContent = message;
+	};
+
+	const ensureFontStylesheet = (key, font) => {
+		if (!font.url) {
+			setStatus(`${font.label} · 本机字体`);
+			return;
+		}
+
+		const id = `atlab-font-${key}`;
+		const existing = document.getElementById(id);
+		if (existing) {
+			setStatus(`${font.label} · 已加载`);
+			return;
+		}
+
+		setStatus(`${font.label} · 加载中…`);
+		const link = document.createElement('link');
+		link.id = id;
+		link.rel = 'stylesheet';
+		link.href = font.url;
+		link.addEventListener('load', () => setStatus(`${font.label} · 已加载`), { once: true });
+		link.addEventListener('error', () => setStatus(`${font.label} · 网络字体不可用，已回退宋体`), { once: true });
+		document.head.append(link);
+	};
+
+	const applyPreference = (preference, persist = true) => {
+		preference = normalizePreference(preference);
+		const font = fonts[preference.font] || fonts.songti;
+		root.style.setProperty('--site-font', font.family);
+		root.style.setProperty('--reading-size', `${preference.readingSize}px`);
+		root.style.setProperty('--sidebar-font-size', `${preference.sidebarSize}px`);
+
+		fontSelect.value = preference.font;
+		readingSelect.value = preference.readingSize;
+		sidebarSelect.value = preference.sidebarSize;
+		ensureFontStylesheet(fontSelect.value, font);
+
+		if (persist) savePreference({
+			font: fontSelect.value,
+			readingSize: readingSelect.value,
+			sidebarSize: sidebarSelect.value,
+		});
+	};
+
+	const currentPreference = () => ({
+		font: fontSelect.value,
+		readingSize: readingSelect.value,
+		sidebarSize: sidebarSelect.value,
+	});
+
+	fontSelect.addEventListener('change', () => applyPreference(currentPreference()));
+	readingSelect.addEventListener('change', () => applyPreference(currentPreference()));
+	sidebarSelect.addEventListener('change', () => applyPreference(currentPreference()));
+	resetButton.addEventListener('click', () => applyPreference({ ...defaults }));
+
+	applyPreference(readPreference(), false);
+})();
+</script></body></html>

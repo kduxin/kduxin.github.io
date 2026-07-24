@@ -1,0 +1,212 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="ICML 2024 Oral：用信息瓶颈刻画生成式检索，按请求分布而非文档相似度构造离散索引。"><meta name="referrer" content="strict-origin-when-cross-origin"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; font-src 'self' data: https://fonts.gstatic.com https://cdn.jsdelivr.net; script-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests"><link rel="icon" href="/favicon.svg"><link id="atlab-font-lxgw" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/style.css"><title>Bottleneck-Minimal Indexing for Generative Document Retrieval · @lab</title><link rel="stylesheet" href="/_astro/PageLayout.g3oEc1qX.css"></head><body><aside class="sidebar"><div class="sidebar-inner"><a class="brand" href="/"><strong>Xin Du</strong></a><nav class="side-nav" aria-label="主导航"><p class="nav-heading">导航</p><a href="/" class="nav-link"><span>个人主页</span><small>01</small></a><a href="/zh/attractor-lab/" class="nav-link"><span>@lab</span><small>02</small></a><p class="nav-group-heading">研究方向</p><div class="nav-children"><a href="/zh/research/agent-dynamics/" class="nav-child"><span>智能体动力学</span><small>R1</small></a><a href="/zh/research/language-fractal-dimension/" class="nav-child"><span>大模型与复杂性</span><small>R2</small></a><a href="/zh/research/generative-retrieval/" class="nav-child"><span>语义压缩与聚类</span><small>R3</small></a><a href="/zh/research/nonlinear-semantics-linear-models/" class="nav-child"><span>非线性语义表示与线性语言模型</span><small>R4</small></a><a href="/zh/research/semantic-financial-markets/" class="nav-child"><span>复杂金融市场的语义模型</span><small>R5</small></a></div></nav><details class="typography-controls" hidden><summary><span aria-hidden="true">Aa</span><span>排版调试</span></summary><div class="typography-panel"><label><span>全站字体</span><select data-typography-font><option value="songti">系统宋体</option><option value="kaiti">系统楷体</option><option value="fangsong">系统仿宋</option><option value="heiti">系统黑体</option><option value="notoSerif">思源宋体 · 网络</option><option value="lxgw">霞鹜文楷 · 网络</option><option value="notoSans">思源黑体 · 网络</option><option value="zcoolXiaoWei">站酷小薇体 · 网络</option><option value="maShanZheng">马善政毛笔体 · 网络</option><option value="longCang">龙藏体 · 网络</option><option value="zcoolQingKe">站酷庆科黄油体 · 网络</option><option value="zcoolKuaiLe">站酷快乐体 · 网络</option></select></label><label><span>正文字号</span><select data-typography-reading-size><option value="15">15 px</option><option value="16" selected>16 px</option><option value="17">17 px</option><option value="18">18 px</option><option value="19">19 px</option><option value="20">20 px</option><option value="21">21 px</option><option value="22">22 px</option></select></label><label><span>导航字号</span><select data-typography-sidebar-size><option value="16">16 px</option><option value="17">17 px</option><option value="18" selected>18 px</option><option value="19">19 px</option><option value="20">20 px</option></select></label><div class="typography-panel-footer"><small data-typography-status aria-live="polite"></small><button type="button" data-typography-reset>恢复默认</button></div></div></details><a class="language-link" href="/en/papers/bottleneck-minimal-indexing/" hreflang="en"><span aria-hidden="true">文</span>English</a><div class="institution"><span>TONGJI UNIVERSITY</span><small>Shanghai Research Institute for Intelligent Autonomous Systems</small></div></div></aside><header class="mobile-header"><a class="mobile-brand" href="/">Xin Du · 杜鑫</a><details class="mobile-menu"><summary>菜单</summary><nav aria-label="移动导航"><a href="/">个人主页</a><a href="/zh/attractor-lab/">@lab</a><span class="mobile-menu-group">研究方向</span><a class="mobile-menu-child" href="/zh/research/agent-dynamics/">智能体动力学</a><a class="mobile-menu-child" href="/zh/research/language-fractal-dimension/">大模型与复杂性</a><a class="mobile-menu-child" href="/zh/research/generative-retrieval/">语义压缩与聚类</a><a class="mobile-menu-child" href="/zh/research/nonlinear-semantics-linear-models/">非线性语义表示与线性语言模型</a><a class="mobile-menu-child" href="/zh/research/semantic-financial-markets/">复杂金融市场的语义模型</a><a href="/en/papers/bottleneck-minimal-indexing/" hreflang="en">English</a></nav></details></header><div class="page-shell"><main><article class="page-content research-page paper-page"><p class="paper-kicker">ICML 2024 Oral · Semantic Compression &#x26; Clustering</p>
+<h1 id="bottleneck-minimal-indexing-for-generative-document-retrieval">Bottleneck-Minimal Indexing for Generative Document Retrieval</h1>
+<p class="paper-byline">Xin Du · Lixin Xiu · Kumiko Tanaka-Ishii</p>
+<p class="research-deck">把生成式文档索引建模为任务相关的信息瓶颈，并由请求条件分布决定离散索引结构。</p>
+<div class="paper-actions">
+  <a href="https://arxiv.org/abs/2405.10974">Paper · arXiv</a>
+  <a href="https://github.com/kduxin/Bottleneck-Minimal-Indexing">Code · GitHub</a>
+  <a href="/zh/research/generative-retrieval/">Research · 语义压缩与聚类</a>
+</div>
+<h2 id="索引不是文档的缩略图">索引不是文档的缩略图</h2>
+<p>生成式文档检索不再先生成稠密向量并执行最近邻搜索，而是为每篇文档分配一段短离散码，再训练序列到序列模型把请求直接翻译为该码。索引既是文档标识，也是检索模型必须学习的输出空间。码字如果没有结构，模型需要记忆近乎任意的“请求—编号”对应；码字如果只按文档内容聚类，又可能保存大量不会影响真实检索的信息。</p>
+<p>问题的关键因此不是怎样更准确地压缩文档，而是 <strong>为了请求而压缩什么</strong>。两篇主题相近的文档可能回答完全不同的问题，两篇措辞不同的文档也可能由同一类请求访问。以文档嵌入距离构造层次索引，默认“内容相似”可以替代“请求行为相似”，但这不是生成式检索目标本身推出的结论。</p>
+<figure class="research-figure research-figure--compact">
+  <img src="../../../images/GDR.png" alt="生成式文档检索中的文档、离散索引与请求" loading="eager">
+  <figcaption>生成式检索把文档压缩为可生成的离散索引；索引结构直接决定请求到码字的学习难度。</figcaption>
+</figure>
+<h2 id="信息瓶颈给出的索引目标">信息瓶颈给出的索引目标</h2>
+<p>设文档为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi></mrow><annotation encoding="application/x-tex">X</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0785em;">X</span></span></span></span>，离散索引为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>T</mi></mrow><annotation encoding="application/x-tex">T</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.1389em;">T</span></span></span></span>，请求为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Q</mi></mrow><annotation encoding="application/x-tex">Q</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">Q</span></span></span></span>。如果只最小化索引保留的文档信息 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>I</mi><mo stretchy="false">(</mo><mi>X</mi><mo separator="true">;</mo><mi>T</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">I(X;T)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0785em;">I</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.0785em;">X</span><span class="mpunct">;</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.1389em;">T</span><span class="mclose">)</span></span></span></span>，最优解会把所有文档映射到同一常数，得到没有检索能力的退化编码。BMI 加入任务约束：索引应尽量短，同时保留从文档推断请求所需的信息，</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><munder><mrow><mi>min</mi><mo>⁡</mo></mrow><mrow><mi>p</mi><mo stretchy="false">(</mo><mi>T</mi><mo>∣</mo><mi>X</mi><mo stretchy="false">)</mo></mrow></munder><mi>I</mi><mo stretchy="false">(</mo><mi>X</mi><mo separator="true">;</mo><mi>T</mi><mo stretchy="false">)</mo><mspace width="2em"></mspace><mrow><mi mathvariant="normal">s</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">t</mi><mi mathvariant="normal">.</mi></mrow><mspace width="1em"></mspace><mi>I</mi><mo stretchy="false">(</mo><mi>T</mi><mo separator="true">;</mo><mi>Q</mi><mo stretchy="false">)</mo><mo>≥</mo><mi>ε</mi><mi mathvariant="normal">.</mi></mrow><annotation encoding="application/x-tex">\min_{p(T\mid X)} I(X;T)
+\qquad
+\mathrm{s.t.}\quad I(T;Q)\geq \varepsilon .</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.716em;vertical-align:-0.966em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6679em;"><span style="top:-2.309em;margin-left:0em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">p</span><span class="mopen mtight">(</span><span class="mord mathnormal mtight" style="margin-right:0.1389em;">T</span><span class="mrel mtight">∣</span><span class="mord mathnormal mtight" style="margin-right:0.0785em;">X</span><span class="mclose mtight">)</span></span></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span><span class="mop">min</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.966em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.0785em;">I</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.0785em;">X</span><span class="mpunct">;</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.1389em;">T</span><span class="mclose">)</span><span class="mspace" style="margin-right:2em;"></span><span class="mord"><span class="mord mathrm">s.t.</span></span><span class="mspace" style="margin-right:1em;"></span><span class="mord mathnormal" style="margin-right:0.0785em;">I</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.1389em;">T</span><span class="mpunct">;</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">Q</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≥</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">ε</span><span class="mord">.</span></span></span></span></span>
+<p>在 Markov 关系 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>T</mi><mo>↔</mo><mi>X</mi><mo>↔</mo><mi>Q</mi></mrow><annotation encoding="application/x-tex">T\leftrightarrow X\leftrightarrow Q</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.1389em;">T</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">↔</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0785em;">X</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">↔</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">Q</span></span></span></span> 下，这等价于权衡码率与条件互信息失真 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>I</mi><mo stretchy="false">(</mo><mi>X</mi><mo separator="true">;</mo><mi>Q</mi><mo>∣</mo><mi>T</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">I(X;Q\mid T)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0785em;">I</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.0785em;">X</span><span class="mpunct">;</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">Q</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∣</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.1389em;">T</span><span class="mclose">)</span></span></span></span>。后者度量把多个文档合并到同一索引后，丢失了多少与请求相关的信息。沿不同索引方案移动，可以得到一条检索任务自己的 information bottleneck curve；位于左下边界的方案，在同等索引容量下造成最小请求失真。</p>
+<p>变分求解得到的平稳条件进一步揭示了索引几何：</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msup><mi>p</mi><mo>∗</mo></msup><mo stretchy="false">(</mo><mi>T</mi><mo>∣</mo><mi>X</mi><mo stretchy="false">)</mo><mo>=</mo><mfrac><mrow><msup><mi>p</mi><mo>∗</mo></msup><mo stretchy="false">(</mo><mi>T</mi><mo stretchy="false">)</mo></mrow><mrow><mi>Z</mi><mo stretchy="false">(</mo><mi>X</mi><mo separator="true">,</mo><mi>β</mi><mo stretchy="false">)</mo></mrow></mfrac><mi>exp</mi><mo>⁡</mo><mtext> ⁣</mtext><mrow><mo fence="true">[</mo><mo>−</mo><mi>β</mi><msub><mi>D</mi><mrow><mi mathvariant="normal">K</mi><mi mathvariant="normal">L</mi></mrow></msub><mtext> ⁣</mtext><mrow><mo fence="true">(</mo><mi>p</mi><mo stretchy="false">(</mo><mi>Q</mi><mo>∣</mo><mi>X</mi><mo stretchy="false">)</mo><mtext> </mtext><mi mathvariant="normal">∥</mi><mtext> </mtext><mi>p</mi><mo stretchy="false">(</mo><mi>Q</mi><mo>∣</mo><mi>T</mi><mo stretchy="false">)</mo><mo fence="true">)</mo></mrow><mo fence="true">]</mo></mrow><mi mathvariant="normal">.</mi></mrow><annotation encoding="application/x-tex">p^\ast(T\mid X)
+=\frac{p^\ast(T)}{Z(X,\beta)}
+\exp\!\left[
+-\beta D_{\mathrm{KL}}\!\left(
+p(Q\mid X)\,\|\,p(Q\mid T)
+\right)\right].</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal">p</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7387em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mbin mtight">∗</span></span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.1389em;">T</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∣</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0785em;">X</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.363em;vertical-align:-0.936em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.427em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0715em;">Z</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.0785em;">X</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.0528em;">β</span><span class="mclose">)</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">p</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6887em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mbin mtight">∗</span></span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.1389em;">T</span><span class="mclose">)</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.936em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mop">exp</span><span class="mspace" style="margin-right:-0.1667em;"></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;">[</span><span class="mord">−</span><span class="mord mathnormal" style="margin-right:0.0528em;">β</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0278em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathrm mtight">KL</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:-0.1667em;"></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;">(</span><span class="mord mathnormal">p</span><span class="mopen">(</span><span class="mord mathnormal">Q</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∣</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord mathnormal" style="margin-right:0.0785em;">X</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">∥</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">p</span><span class="mopen">(</span><span class="mord mathnormal">Q</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∣</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord mathnormal" style="margin-right:0.1389em;">T</span><span class="mclose">)</span><span class="mclose delimcenter" style="top:0em;">)</span></span><span class="mclose delimcenter" style="top:0em;">]</span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">.</span></span></span></span></span>
+<p>文档是否共享索引，由它们的请求条件分布决定。传统的文档聚类只有在文档距离能够近似上述 KL 失真时，才是这个目标的合理替代。</p>
+<h2 id="从理论目标到可训练索引">从理论目标到可训练索引</h2>
+<p>真实的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo stretchy="false">(</mo><mi>Q</mi><mo>∣</mo><mi>X</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">p(Q\mid X)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">p</span><span class="mopen">(</span><span class="mord mathnormal">Q</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∣</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0785em;">X</span><span class="mclose">)</span></span></span></span> 未知，也可能是多峰分布。论文在高斯近似下，把每篇文档表示为其相关请求的平均 BERT 表征 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>μ</mi><mrow><mi>Q</mi><mo>∣</mo><mi>x</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\mu_{Q\mid x}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7858em;vertical-align:-0.3552em;"></span><span class="mord"><span class="mord mathnormal">μ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3448em;"><span style="top:-2.5198em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">Q</span><span class="mrel mtight">∣</span><span class="mord mathnormal mtight">x</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.3552em;"><span></span></span></span></span></span></span></span></span></span>，再执行层次 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.0315em;">k</span></span></span></span>-means。树的每一层产生一个数字，根到叶的路径组成前缀码；请求分布相近的文档共享更长前缀，使生成模型能够复用局部决策。</p>
+<p>请求样本来自三个互补来源：数据中的真实请求、docT5query 生成的请求，以及从文档中抽取的片段。前两者直接逼近用户可能提出的问题，文档片段则补充短请求没有表达的实体和上下文。MARCO Lite 的消融实验中，仅使用文档表征的 T5-mini Rec@1 为 <strong>7.09</strong>，加入生成请求后为 <strong>9.24</strong>，再加入真实请求为 <strong>10.03</strong>，三者与文档片段共同使用达到 <strong>13.54</strong>。这说明“请求驱动”并不等于丢弃文档，而是让所有信号服务于同一个条件分布估计。</p>
+<figure class="research-figure">
+  <img src="../../../images/BMI.png" alt="Bottleneck-Minimal Indexing 的信息瓶颈建模与层次索引构造" loading="lazy">
+  <figcaption>BMI 先以请求条件分布定义信息失真，再用层次聚类把相近分布编码为共享前缀。</figcaption>
+</figure>
+<h2 id="容量受限时索引结构更重要">容量受限时，索引结构更重要</h2>
+<p>实验在 NQ320K 与 MARCO Lite 上使用 NCI 的 T5 与 PAWA 解码架构，只改变索引构造方式。在 T5-mini 上，NQ320K 的 Rec@1 从层次文档聚类的 <strong>41.43</strong> 提升至 <strong>48.49</strong>；MARCO Lite 从 <strong>7.09</strong> 提升至 <strong>13.54</strong>，相对提高 <strong>91%</strong>。当模型扩大到 T5-base，两个数据集仍分别提高 <strong>1.26</strong> 和 <strong>3.72</strong> 个百分点，但增幅缩小。</p>
+<p>这一容量效应与信息瓶颈解释一致。大模型可以用参数记忆一部分不规则映射，从而补偿较差的索引；小模型没有足够容量绕过码字结构，索引是否对齐请求分布会直接决定可学习性。相同现象也出现在 bottleneck curve 上：模型越大，能够越接近低码率、低失真的边界；在固定模型容量下，请求驱动的索引比随机编号、LSH 和普通层次 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.0315em;">k</span></span></span></span>-means 更靠近这一边界。</p>
+<p>BMI 在 NQ320K 上以 <strong>66.9</strong> 的 Rec@1 接近当时使用额外学习式索引程序的 GENRET 和 NOVO，也与静态数字索引的强基线相当。方法的贡献不在于引入更大的检索模型，而在于说明索引本身应当由检索任务的信息结构推导。</p>
+<h2 id="方法的边界">方法的边界</h2>
+<p>BMI 把生成式索引从启发式文档聚类转化为任务相关的语义压缩问题。理论上，最优几何由完整的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo stretchy="false">(</mo><mi>Q</mi><mo>∣</mo><mi>X</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">p(Q\mid X)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">p</span><span class="mopen">(</span><span class="mord mathnormal">Q</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∣</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0785em;">X</span><span class="mclose">)</span></span></span></span> 及其 KL 散度决定；当前实现用有限查询、BERT 均值、高斯假设和层次 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.0315em;">k</span></span></span></span>-means 近似这一目标。请求分布高度多峰时，均值会抹去结构；新文档加入或用户请求发生漂移时，静态树形索引也需要更新。</p>
+<p>这些限制同时指出后续方向：直接在生成分布上计算失真、为动态语料设计可重分配码，以及将模型容量、码长与召回率放在同一 rate–distortion 分析中。BMI 的核心结论仍然成立——文档索引的质量不应由它复原了多少文档内容判断，而应由它保留了多少完成检索所需的信息判断。</p>
+<p><a class="paper-back" href="/zh/research/generative-retrieval/">← 语义压缩与聚类</a></p></article></main><footer><span>© 2026 Xin Du</span><span>Tongji University · Shanghai</span></footer></div><script>(() => {
+	const STORAGE_KEY = 'atlab-typography-v3';
+	const defaults = {
+		font: 'lxgw',
+		readingSize: '16',
+		sidebarSize: '18',
+	};
+	const fonts = {
+		songti: {
+			family: '"Songti SC", "STSong", "Noto Serif CJK SC", "Source Han Serif SC", "SimSun", Georgia, serif',
+			label: '系统宋体',
+		},
+		kaiti: {
+			family: '"Kaiti SC", "STKaiti", "KaiTi", "Songti SC", serif',
+			label: '系统楷体',
+		},
+		fangsong: {
+			family: '"FangSong", "STFangsong", "Songti SC", "STSong", serif',
+			label: '系统仿宋',
+		},
+		heiti: {
+			family: '"PingFang SC", "Heiti SC", "STHeiti", "Microsoft YaHei", sans-serif',
+			label: '系统黑体',
+		},
+		notoSerif: {
+			family: '"Noto Serif SC", "Songti SC", "STSong", "SimSun", Georgia, serif',
+			label: '思源宋体',
+			url: 'https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&display=swap',
+		},
+		lxgw: {
+			family: '"LXGW WenKai", "Songti SC", "STSong", "SimSun", serif',
+			label: '霞鹜文楷',
+			url: 'https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/style.css',
+		},
+		notoSans: {
+			family: '"Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif',
+			label: '思源黑体',
+			url: 'https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap',
+		},
+		zcoolXiaoWei: {
+			family: '"ZCOOL XiaoWei", "Songti SC", "STSong", "SimSun", serif',
+			label: '站酷小薇体',
+			url: 'https://fonts.googleapis.com/css2?family=ZCOOL+XiaoWei&display=swap',
+		},
+		maShanZheng: {
+			family: '"Ma Shan Zheng", "Kaiti SC", "STKaiti", cursive',
+			label: '马善政毛笔体',
+			url: 'https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap',
+		},
+		longCang: {
+			family: '"Long Cang", "Kaiti SC", "STKaiti", cursive',
+			label: '龙藏体',
+			url: 'https://fonts.googleapis.com/css2?family=Long+Cang&display=swap',
+		},
+		zcoolQingKe: {
+			family: '"ZCOOL QingKe HuangYou", "Noto Sans SC", "PingFang SC", sans-serif',
+			label: '站酷庆科黄油体',
+			url: 'https://fonts.googleapis.com/css2?family=ZCOOL+QingKe+HuangYou&display=swap',
+		},
+		zcoolKuaiLe: {
+			family: '"ZCOOL KuaiLe", "Noto Sans SC", "PingFang SC", sans-serif',
+			label: '站酷快乐体',
+			url: 'https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap',
+		},
+	};
+	const readingSizes = new Set(['15', '16', '17', '18', '19', '20', '21', '22']);
+	const sidebarSizes = new Set(['16', '17', '18', '19', '20']);
+
+	const fontSelect = document.querySelector('[data-typography-font]');
+	const readingSelect = document.querySelector('[data-typography-reading-size]');
+	const sidebarSelect = document.querySelector('[data-typography-sidebar-size]');
+	const resetButton = document.querySelector('[data-typography-reset]');
+	const status = document.querySelector('[data-typography-status]');
+
+	if (!(fontSelect instanceof HTMLSelectElement)
+		|| !(readingSelect instanceof HTMLSelectElement)
+		|| !(sidebarSelect instanceof HTMLSelectElement)
+		|| !(resetButton instanceof HTMLButtonElement)) return;
+
+	const root = document.documentElement;
+
+	const normalizePreference = (preference) => ({
+		font: preference.font in fonts ? preference.font : defaults.font,
+		readingSize: readingSizes.has(String(preference.readingSize))
+			? String(preference.readingSize)
+			: defaults.readingSize,
+		sidebarSize: sidebarSizes.has(String(preference.sidebarSize))
+			? String(preference.sidebarSize)
+			: defaults.sidebarSize,
+	});
+
+	const readPreference = () => {
+		try {
+			const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+			return normalizePreference({ ...defaults, ...saved });
+		} catch {
+			return { ...defaults };
+		}
+	};
+
+	const savePreference = (preference) => {
+		try {
+			localStorage.setItem(STORAGE_KEY, JSON.stringify(preference));
+		} catch {
+			// Preferences still work for the current page when storage is unavailable.
+		}
+	};
+
+	const setStatus = (message) => {
+		if (status) status.textContent = message;
+	};
+
+	const ensureFontStylesheet = (key, font) => {
+		if (!font.url) {
+			setStatus(`${font.label} · 本机字体`);
+			return;
+		}
+
+		const id = `atlab-font-${key}`;
+		const existing = document.getElementById(id);
+		if (existing) {
+			setStatus(`${font.label} · 已加载`);
+			return;
+		}
+
+		setStatus(`${font.label} · 加载中…`);
+		const link = document.createElement('link');
+		link.id = id;
+		link.rel = 'stylesheet';
+		link.href = font.url;
+		link.addEventListener('load', () => setStatus(`${font.label} · 已加载`), { once: true });
+		link.addEventListener('error', () => setStatus(`${font.label} · 网络字体不可用，已回退宋体`), { once: true });
+		document.head.append(link);
+	};
+
+	const applyPreference = (preference, persist = true) => {
+		preference = normalizePreference(preference);
+		const font = fonts[preference.font] || fonts.songti;
+		root.style.setProperty('--site-font', font.family);
+		root.style.setProperty('--reading-size', `${preference.readingSize}px`);
+		root.style.setProperty('--sidebar-font-size', `${preference.sidebarSize}px`);
+
+		fontSelect.value = preference.font;
+		readingSelect.value = preference.readingSize;
+		sidebarSelect.value = preference.sidebarSize;
+		ensureFontStylesheet(fontSelect.value, font);
+
+		if (persist) savePreference({
+			font: fontSelect.value,
+			readingSize: readingSelect.value,
+			sidebarSize: sidebarSelect.value,
+		});
+	};
+
+	const currentPreference = () => ({
+		font: fontSelect.value,
+		readingSize: readingSelect.value,
+		sidebarSize: sidebarSelect.value,
+	});
+
+	fontSelect.addEventListener('change', () => applyPreference(currentPreference()));
+	readingSelect.addEventListener('change', () => applyPreference(currentPreference()));
+	sidebarSelect.addEventListener('change', () => applyPreference(currentPreference()));
+	resetButton.addEventListener('click', () => applyPreference({ ...defaults }));
+
+	applyPreference(readPreference(), false);
+})();
+</script></body></html>
