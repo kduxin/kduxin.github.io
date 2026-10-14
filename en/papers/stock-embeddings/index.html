@@ -40,7 +40,7 @@ w^\top\mathbf 1=1,\quad
   <figcaption>On Reuters/Bloomberg data, stock-embedding portfolios achieve average realized annual returns 2.8 times the historical-covariance baseline.</figcaption>
 </figure>
 <p>Stock-embedding portfolios outperform controls across most expected-return constraints. On Reuters/Bloomberg, mean realized annual return is <strong>35.5%</strong>, compared with <strong>12.7%</strong> for the historical-covariance baseline—a factor of approximately <strong>2.8</strong>. Gains on WSJ are smaller but positive. Simply multiplying text representations with covariance is unstable; the useful geometry is the one supervised jointly by price movement.</p>
-<h2 id="finding-and-boundary">Finding and Boundary</h2>
+<h2 id="findings-and-limitations">Findings and Limitations</h2>
 <p>The contribution is not a fixed trading strategy. It turns intermediate knowledge in a financial NLP model into an operational object: stock vectors can be extracted, visualized, and inserted into an optimization problem outside the training classifier. This interface motivates later work on tail risk.</p>
 <p>The results are annual rolling simulations on historical data and omit transaction costs, market impact, and many practical constraints. They are not guarantees of future returns. Contemporaneous news is used only for representation learning in the classification setting. The next question is whether text systematically supplements the rare events and structural changes that ordinary price covariance misses.</p>
 <p><a class="paper-back" href="/en/research/semantic-financial-markets/">← Semantic Models of Financial Markets</a></p></article></main><footer><span>© 2026 Xin Du</span><span>Tongji University · Shanghai</span></footer></div><script>(() => {
